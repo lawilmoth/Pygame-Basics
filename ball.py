@@ -1,13 +1,15 @@
 import pygame
+import random
 
 class Ball(pygame.sprite.Sprite):
     def __init__(self):
         """All of this code happens when we create the paddle"""
         super().__init__()
-        self.radius = 20
+        self.radius = 10
         self.color = "#fa00af"
-        self.speed = 10
-        
+        self.x_vel = random.randint(-10, 10)
+        self.y_vel = random.randint(-10, 10)
+        self.x = random.randint(100, 700)
 
         self.image = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
         
@@ -17,17 +19,23 @@ class Ball(pygame.sprite.Sprite):
 
         self.rect.center = (400, 300)
 
-        self.moving_right = False
-        self.moving_left = False
+
 
     
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        pygame.draw.circle(screen, self.color, self.rect.center, self.radius)
 
     
     def update(self):
-        if self.moving_left and self.rect.left > 0:
-            self.rect.x -= self.speed
+
+        if self.rect.right >= 800 or self.rect.left <= 0:
+            #Change direction
+            self.x_vel *= -1
             
-        if self.moving_right and self.rect.right < 800:
-            self.rect.x += self.speed 
+        if self.rect.bottom >= 600 or self.rect.top <= 0:
+            #Change direction
+            self.y_vel *= -1
+
+        self.rect.x += self.x_vel
+        self.rect.y += self.y_vel
+        

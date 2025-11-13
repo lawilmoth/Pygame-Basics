@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 from paddle import Paddle
 from ball import Ball
 pygame.init()
@@ -14,7 +14,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 PURPLE = (154, 26, 176)
 
-
+ball_limit = 10
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("My Game!")
@@ -25,10 +25,16 @@ running = True
 
 ##################
 paddle= Paddle()
-ball = Ball()
+balls = pygame.sprite.Group()
 ##################
 
 while running:
+
+    #randomly create a ball 
+    if len(balls) < ball_limit:
+        if random.random() > .99:
+            ball = Ball()
+            balls.add(ball)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -52,15 +58,18 @@ while running:
 
     #update the screen
     paddle.update()
-    ball.update()
+    balls.update()
     screen.fill(PURPLE)
     
 
     #Show the screen
     paddle.draw(screen)
-    ball.draw(screen)
+    
+    for ball in balls:
+        ball.draw(screen)
     
     pygame.display.flip()
 
     #Limits to 60FPS
     clock.tick(120)
+    
