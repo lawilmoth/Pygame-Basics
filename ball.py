@@ -5,10 +5,10 @@ class Ball(pygame.sprite.Sprite):
     def __init__(self):
         """All of this code happens when we create the paddle"""
         super().__init__()
-        self.radius = 10
+        self.radius = 15
         self.color = "#fa00af"
-        self.x_vel = random.randint(-10, 10)
-        self.y_vel = random.randint(-10, 10)
+        self.x_vel = random.randint(-5, 5)
+        self.y_vel = random.randint(-5, -1)
         self.x = random.randint(100, 700)
 
         self.image = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
@@ -32,9 +32,12 @@ class Ball(pygame.sprite.Sprite):
             #Change direction
             self.x_vel *= -1
             
-        if self.rect.bottom >= 600 or self.rect.top <= 0:
+        if self.rect.top <= 0:
             #Change direction
             self.y_vel *= -1
+
+        if self.rect.top > 600:
+            self.kill()
 
         self.rect.x += self.x_vel
         self.rect.y += self.y_vel

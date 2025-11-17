@@ -7,8 +7,8 @@ class Paddle(pygame.sprite.Sprite):
     def __init__(self):
         """All of this code happens when we create the paddle"""
         super().__init__()
-        self.width = 100
-        self.height = 15
+        self.width = 200
+        self.height = 20
         self.speed = 10
         self.color = (self.GREEN)
 
