@@ -19,6 +19,7 @@ class Ball(pygame.sprite.Sprite):
 
         self.rect.center = (400, 300)
 
+        self.is_playing = False
 
 
     
@@ -26,19 +27,26 @@ class Ball(pygame.sprite.Sprite):
         pygame.draw.circle(screen, self.color, self.rect.center, self.radius)
 
     
-    def update(self):
+    def update(self, paddle):
+        if self.is_playing:
+            if self.rect.right >= 800 or self.rect.left <= 0:
+                #Change direction
+                self.x_vel *= -1
+                
+            if self.rect.top <= 0:
+                #Change direction
+                self.y_vel = abs(self.y_vel)
 
-        if self.rect.right >= 800 or self.rect.left <= 0:
-            #Change direction
-            self.x_vel *= -1
-            
-        if self.rect.top <= 0:
-            #Change direction
-            self.y_vel *= -1
+            if self.rect.top > 600:
+                self.kill()
 
-        if self.rect.top > 600:
-            self.kill()
+            self.rect.x += self.x_vel
+            self.rect.y += self.y_vel
 
-        self.rect.x += self.x_vel
-        self.rect.y += self.y_vel
-        
+        else:
+            self.rect.center = (
+                paddle.rect.centerx, 
+                paddle.rect.top - self.radius)
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                self.is_playing = True
